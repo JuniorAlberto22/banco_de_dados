@@ -1,0 +1,53 @@
+﻿/* criação das tabelas*/
+create table ambulatorio(
+	id_ambulatorio int,
+	numero_ambulatorio int unique,
+	andar int not null,
+	capacidade int not null,
+	constraint pk_ambulatorio primary key(id_ambulatorio)
+);
+	
+create table medico(
+	id_medico int,
+	codigo_medico int unique,
+	cpf varchar(14) unique not null,
+	nome varchar(100) not null,
+	data_nascimento date not null,
+	cidade varchar(100) not null,
+	especialidade varchar(100) not null,
+	numero_ambulatorio int,
+	constraint pk_medico primary key(id_medico), 
+	constraint fk_ambulatorio foreign key(numero_ambulatorio) references ambulatorio(numero_ambulatorio) on delete cascade
+);
+
+create table paciente(
+	id_paciente int,
+	codigo_paciente int unique,
+	cpf varchar(14) unique not null,
+	nome varchar(100) not null,
+	data_nascimento timestamp not null,
+	cidade varchar(100) not null,
+	doenca varchar(100) not null,
+	constraint pk_paciente primary key(id_paciente)
+);
+
+create table consulta(
+	id_consulta int,
+	codigo_medico int,
+	codigo_paciente int,
+	data_realizacao timestamp not null,
+	constraint fk_medico foreign key(codigo_medico) references medico(codigo_medico) on delete cascade,
+	constraint fk_paciente foreign key(codigo_paciente) references paciente(codigo_paciente) on delete cascade,
+	constraint pk_consulta primary key(codigo_medico, codigo_paciente, id_consulta)
+);
+
+create table funcionario(
+	id_funcionario int,
+	codigo_funcionario int unique,
+	cpf varchar(14) unique not null,
+	nome varchar(100) not null,
+	data_nascimento timestamp,
+	cidade varchar(100) not null,
+	salario decimal not null,
+	constraint pk_funcionario primary key(id_funcionario)
+);
